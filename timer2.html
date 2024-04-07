@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #timer {
+            text-align: center;
+        }
+
+        button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 9px;
+        cursor: pointer;
+        margin-right: 10px;
+        }
+
+        #startButton {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        #stopButton {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+
+        #resetButton {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div id="timer">
+        <h2>Task Timer</h2>
+        <div id="timeDisplay">00:00</div>
+        <div id="moneyEarned">$0.00</div>
+        <button id="startButton">Start</button>
+        <button id="stopButton">Stop & Store</button>
+        <button id="resetButton">Reset</button>
+    </div>
+
+    <script>
+        let timerInterval;
+        let startTime;
+        let elapsedTime = 0;
+        let moneyEarned = 0;
+        let moneyEarnedCurrentTask = 0;
+        const ratePerHour = 41;
+
+        const formatTime = (timeInSeconds) => {
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        };
+
+        const updateDisplay = () => {
+            document.getElementById('timeDisplay').textContent = formatTime(elapsedTime);
+            document.getElementById('moneyEarned').textContent = `$${(moneyEarned + moneyEarnedCurrentTask).toFixed(2)}`;
+        };
+
+        const startTimer = () => {
+            startTime = Date.now() - elapsedTime * 1000;
+            timerInterval = setInterval(() => {
+                elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+
+                updateDisplay()
+                
+                ;
+            }, 1000);
+        };
+
+        const stopTimer = () => {
+            clearInterval(timerInterval);
+            moneyEarnedCurrentTask=0.0114*elapsedTime
+            moneyEarned += moneyEarnedCurrentTask;
+            moneyEarnedCurrentTask = 0;
+            elapsedTime = 0;
+            updateDisplay();
+        };
+
+        const resetTimer = () => {
+            clearInterval(timerInterval);
+            elapsedTime = 0;
+            moneyEarnedCurrentTask = 0;
+            updateDisplay();
+        };
+
+
+        document.getElementById('startButton').addEventListener('click', startTimer);
+        document.getElementById('stopButton').addEventListener('click', stopTimer);
+        document.getElementById('resetButton').addEventListener('click', resetTimer);
+    </script>
+</body>
+</html>

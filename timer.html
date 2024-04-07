@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remo:</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        text-align: center;
+    }
+    #timer {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    #money-earned {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    .button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    #start-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+    }
+    #stop-button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+    }
+    #reset-button {
+        background-color: #2196F3;
+        color: white;
+        border: none;
+    }
+    .button:hover {
+        opacity: 0.8;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div id="timer">00:00</div>
+    <div id="money-earned">$0.00</div>
+    <button id="start-button" class="button" onclick="startTimer()">Start</button>
+    <button id="stop-button" class="button" onclick="stopTimer()">Stop</button>
+    <button id="reset-button" class="button" onclick="resetTimer()">Reset</button>
+</div>
+
+<script>
+    let timerInterval;
+    let seconds = 0;
+    let minutes = 0;
+    let moneyEarned = 0;
+    const hourlyRate = 41;
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        seconds = 0;
+        minutes = 0;
+        moneyEarned = 0;
+        updateTimerDisplay();
+    }
+
+    function updateTimer() {
+        seconds++;
+        if (seconds === 60) {
+            seconds = 0;
+            minutes++;
+        }
+        updateTimerDisplay();
+        updateMoneyEarned();
+    }
+
+    function updateTimerDisplay() {
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+        document.getElementById('timer').textContent = `${formattedMinutes}:${formattedSeconds}`;
+    }
+
+    function updateMoneyEarned() {
+        const totalMinutes = minutes + seconds / 60;
+        moneyEarned = totalMinutes / 60 * hourlyRate;
+        document.getElementById('money-earned').textContent = `$${moneyEarned.toFixed(2)}`;
+        document.title = `Money Earned: $${moneyEarned.toFixed(2)}`;
+    }
+</script>
+</body>
+</html>
