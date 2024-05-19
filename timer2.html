@@ -102,7 +102,7 @@
             updateDisplay();
         };
 
-
+        document.title = `Money Earned: $${moneyEarned.toFixed(2)}`
         document.getElementById('startButton').addEventListener('click', startTimer);
         document.getElementById('stopButton').addEventListener('click', stopTimer);
         document.getElementById('resetButton').addEventListener('click', resetTimer);
